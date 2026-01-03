@@ -16,17 +16,18 @@
       margin: 0;
       min-height: 100vh;
       background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .app {
       background: white;
       width: 360px;
+      max-width: 100%;
       padding: 24px;
       border-radius: 20px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+
+      /* ✅ 중앙 정렬의 핵심 */
+      margin: 40px auto;
     }
 
     h1 {
@@ -97,3 +98,115 @@
 
     @keyframes fadeIn {
       from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 📱 모바일 반응형 (안전한 것만) */
+    @media (max-width: 480px) {
+      .app {
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      input {
+        font-size: 16px;
+        padding: 12px;
+      }
+
+      button.add {
+        font-size: 15px;
+      }
+
+      .delete {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>📝 To-Do List</h1>
+
+    <div class="input-box">
+      <input id="todoInput" placeholder="할 일을 입력해줘…" />
+      <button class="add" onclick="addTodo()">+</button>
+    </div>
+
+    <ul id="todoList"></ul>
+  </div>
+
+  <script>
+    const input = document.getElementById("todoInput");
+    const list = document.getElementById("todoList");
+
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    function saveTodos() {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+
+    function renderTodos() {
+      list.innerHTML = "";
+
+      todos.forEach((todo, index) => {
+        const li = document.createElement("li");
+        if (todo.done) li.classList.add("done");
+
+        li.onclick = (e) => {
+          if (e.target.tagName === "BUTTON") return;
+          todo.done = !todo.done;
+          saveTodos();
+          renderTodos();
+        };
+
+        const span = document.createElement("span");
+        span.textContent = todo.text;
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "✖";
+        delBtn.className = "delete";
+        delBtn.onclick = () => {
+          todos.splice(index, 1);
+          saveTodos();
+          renderTodos();
+        };
+
+        li.append(span, delBtn);
+        list.appendChild(li);
+      });
+    }
+
+    function addTodo() {
+      if (input.value.trim() === "") return;
+
+      todos.push({
+        text: input.value,
+        done: false
+      });
+
+      input.value = "";
+      input.blur();
+      saveTodos();
+      renderTodos();
+    }
+
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") addTodo();
+    });
+
+    renderTodos();
+  </script>
+</body>
+</html>
