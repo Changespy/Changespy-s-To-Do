@@ -26,8 +26,8 @@
       border-radius: 20px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 
-      /* ✅ 중앙 정렬의 핵심 */
-      margin: 40px auto;
+      /* ✅ 기본 위치 */
+      margin: 80px auto;
     }
 
     h1 {
@@ -107,10 +107,10 @@
       }
     }
 
-    /* 📱 모바일 반응형 (안전한 것만) */
+    /* 📱 모바일 */
     @media (max-width: 480px) {
       .app {
-        margin: 20px auto;
+        margin: 40px auto;
         padding: 20px;
         border-radius: 16px;
       }
@@ -122,10 +122,6 @@
       input {
         font-size: 16px;
         padding: 12px;
-      }
-
-      button.add {
-        font-size: 15px;
       }
 
       .delete {
@@ -191,11 +187,7 @@
     function addTodo() {
       if (input.value.trim() === "") return;
 
-      todos.push({
-        text: input.value,
-        done: false
-      });
-
+      todos.push({ text: input.value, done: false });
       input.value = "";
       input.blur();
       saveTodos();
