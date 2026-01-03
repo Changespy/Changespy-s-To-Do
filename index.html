@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sungyoon kim's To-Do ✨</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
@@ -54,6 +55,8 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
+      min-width: 44px;
+      min-height: 44px;
     }
 
     ul {
@@ -71,6 +74,7 @@
       border-radius: 12px;
       margin-bottom: 10px;
       animation: fadeIn 0.3s ease;
+      cursor: pointer;
     }
 
     li.done span {
@@ -80,7 +84,6 @@
 
     li span {
       flex: 1;
-      cursor: pointer;
     }
 
     .delete {
@@ -89,129 +92,8 @@
       color: #ff6b6b;
       font-size: 16px;
       cursor: pointer;
+      padding: 8px;
     }
 
     @keyframes fadeIn {
       from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <h1>📝 To-Do List</h1>
-
-    <div class="input-box">
-      <input id="todoInput" placeholder="할 일을 입력해줘…" />
-      <button class="add" onclick="addTodo()">+</button>
-    </div>
-
-    <ul id="todoList"></ul>
-  </div>
-
-  <script>
-    const input = document.getElementById("todoInput");
-    const list = document.getElementById("todoList");
-
-    // 로컬스토리지에서 불러오기
-    let todos = JSON.parse(localStorage.getItem("todos")) || [];
-
-    function saveTodos() {
-      localStorage.setItem("todos", JSON.stringify(todos));
-    }
-
-    function renderTodos() {
-      list.innerHTML = "";
-      todos.forEach((todo, index) => {
-        const li = document.createElement("li");
-        if (todo.done) li.classList.add("done");
-
-        const span = document.createElement("span");
-        span.textContent = todo.text;
-        span.onclick = () => {
-          todo.done = !todo.done;
-          saveTodos();
-          renderTodos();
-        };
-
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "✖";
-        delBtn.className = "delete";
-        delBtn.onclick = () => {
-          todos.splice(index, 1);
-          saveTodos();
-          renderTodos();
-        };
-
-        li.append(span, delBtn);
-        list.appendChild(li);
-      });
-    }
-
-    function addTodo() {
-      if (input.value.trim() === "") return;
-
-      todos.push({
-        text: input.value,
-        done: false
-      });
-
-      input.value = "";
-      saveTodos();
-      renderTodos();
-    }
-
-    input.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") addTodo();
-    });
-
-    // 처음 로드할 때
-    renderTodos();
-    /* 📱 모바일 반응형 */
-@media (max-width: 480px) {
-  body {
-    padding: 16px;
-    align-items: flex-start;
-  }
-
-  .app {
-    width: 100%;
-    max-width: 360px;
-    padding: 20px;
-    border-radius: 16px;
-  }
-
-  h1 {
-    font-size: 20px;
-  }
-
-  input {
-    font-size: 16px; /* 모바일 자동 확대 방지 */
-    padding: 12px;
-  }
-
-  button.add {
-    font-size: 15px;
-    padding: 12px 14px;
-  }
-
-  li {
-    padding: 12px 14px;
-  }
-
-  .delete {
-    font-size: 18px;
-  }
-}
-  </script>
-</body>
-</html>
-
-
-
