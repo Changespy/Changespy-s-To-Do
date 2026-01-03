@@ -173,7 +173,44 @@
 
     // 처음 로드할 때
     renderTodos();
+    /* 📱 모바일 반응형 */
+@media (max-width: 480px) {
+  body {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  input {
+    font-size: 16px; /* 모바일 자동 확대 방지 */
+    padding: 12px;
+  }
+
+  button.add {
+    font-size: 15px;
+    padding: 12px 14px;
+  }
+
+  li {
+    padding: 12px 14px;
+  }
+
+  .delete {
+    font-size: 18px;
+  }
+}
   </script>
 </body>
 </html>
+
 
